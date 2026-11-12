@@ -1,0 +1,16 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+
+.idea/
+.vscode/
+
+.codex/
+
+Docs/AI
+OutDll/
+
+.tools/
+temp/
