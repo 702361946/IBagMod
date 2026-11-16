@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using HarmonyLib;
 
 namespace IBagMod;
 
@@ -11,6 +12,11 @@ public class Plugin : BaseUnityPlugin
     
     private void Awake()
     {
-        
+        IBagMod.Config.Init(Config);
+
+        if (IBagMod.Config.UnlockResolutionLimit.Value)
+        {
+            Harmony.CreateAndPatchAll(typeof(UnlockResolutionLimit.Patch));
+        }
     }
 }
