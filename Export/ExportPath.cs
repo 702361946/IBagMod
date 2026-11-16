@@ -1,13 +1,12 @@
-﻿using BepInEx;
+﻿using System.IO;
+using BepInEx;
 
 namespace Export;
 
-public class ExportPath
+public static class ExportPath
 {
-    // ReSharper disable once MemberCanBePrivate.Global
-    // ReSharper disable once FieldCanBeMadeReadOnly.Global
-    public static string RootPath = InitRootPath();
-    public static string OutputPath = InitOutPath();
+    private static readonly string RootPath = InitRootPath();
+    public static readonly string OutputPath = InitOutPath();
 
     private static string InitRootPath()
     {

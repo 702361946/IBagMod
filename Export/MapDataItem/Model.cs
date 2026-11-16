@@ -1,19 +1,27 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace Export.MapDataItem;
 
 public class Model(global::MapDataItem mapDataItem)
 {
+    // ReSharper disable once UnusedMember.Global
     public int ID = mapDataItem.id;
+    // ReSharper disable once UnusedMember.Global
     public string Name = mapDataItem.name;
+    // ReSharper disable once UnusedMember.Global
     public string Desc = mapDataItem.desc;
 
+    // ReSharper disable once UnusedMember.Global
     public List<string> AttributeTypes = [
         .. mapDataItem.attriTypeList.Select(
             v => Enum.GetName(typeof(AttributeType), v)
         )
     ];
     
+    // ReSharper disable once UnusedMember.Global
     public List<List<string>> AttributeCurveFuncList =
     [
         .. mapDataItem.attriFuncCoefList
@@ -23,6 +31,7 @@ public class Model(global::MapDataItem mapDataItem)
             )
     ];
 
+    // ReSharper disable once UnusedMember.Global
     public List<string> InferredAttribute = __GetAllInferredAttribute(mapDataItem);
     
     public JObject OutputJson()
