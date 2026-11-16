@@ -14,6 +14,16 @@ public class Plugin : BaseUnityPlugin
     {
         IBagMod.Config.Init(Config);
 
+        try
+        {
+            ContentInjectionFramework.InjectionManager.Init();
+            Harmony.CreateAndPatchAll(typeof(ContentInjectionFramework.MapDataLibLoadPatch));
+        }
+        catch (System.Exception exception)
+        {
+            Logger.LogError($"CIF 初始化失败：{exception}");
+        }
+
         if (IBagMod.Config.UnlockResolutionLimit.Value)
         {
             Harmony.CreateAndPatchAll(typeof(UnlockResolutionLimit.Patch));

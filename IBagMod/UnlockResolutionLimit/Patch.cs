@@ -9,6 +9,7 @@ public static class Patch
         AccessTools.FieldRefAccess<PreLoad, bool>("hasStart");
 
     // ReSharper disable once InconsistentNaming
+    // ReSharper disable once UnusedMember.Global
     public static bool Prefix(PreLoad __instance)
     {
         if (HasStartRef(__instance))
