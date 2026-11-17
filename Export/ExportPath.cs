@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Reflection;
 using BepInEx;
 
 namespace Export;
@@ -10,11 +11,11 @@ public static class ExportPath
 
     private static string InitRootPath()
     {
-        var dllPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+        var dllPath = Assembly.GetExecutingAssembly().Location;
         var dllDir = Path.GetDirectoryName(dllPath) ?? Paths.PluginPath;
         return Path.GetFullPath(dllDir);
     }
-    
+
     private static string InitOutPath()
     {
         return Path.Combine(RootPath, "out");

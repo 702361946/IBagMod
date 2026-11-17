@@ -10,8 +10,7 @@ public static class Export
     {
         List<JObject> rs =
         [
-            .. mapDataItemLib.item.Select(
-                mapDataItem => new Model(mapDataItem)
+            .. mapDataItemLib.item.Select(mapDataItem => new Model(mapDataItem)
             ).Select(model => model.OutputJson())
         ];
 

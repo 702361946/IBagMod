@@ -8,20 +8,6 @@ namespace Export.MapDataItem;
 public class Model(global::MapDataItem mapDataItem)
 {
     // ReSharper disable once UnusedMember.Global
-    public int ID = mapDataItem.id;
-    // ReSharper disable once UnusedMember.Global
-    public string Name = mapDataItem.name;
-    // ReSharper disable once UnusedMember.Global
-    public string Desc = mapDataItem.desc;
-
-    // ReSharper disable once UnusedMember.Global
-    public List<string> AttributeTypes = [
-        .. mapDataItem.attriTypeList.Select(
-            v => Enum.GetName(typeof(AttributeType), v)
-        )
-    ];
-    
-    // ReSharper disable once UnusedMember.Global
     public List<List<string>> AttributeCurveFuncList =
     [
         .. mapDataItem.attriFuncCoefList
@@ -32,8 +18,24 @@ public class Model(global::MapDataItem mapDataItem)
     ];
 
     // ReSharper disable once UnusedMember.Global
+    public List<string> AttributeTypes =
+    [
+        .. mapDataItem.attriTypeList.Select(v => Enum.GetName(typeof(AttributeType), v)
+        )
+    ];
+
+    // ReSharper disable once UnusedMember.Global
+    public string Desc = mapDataItem.desc;
+
+    // ReSharper disable once UnusedMember.Global
+    public int ID = mapDataItem.id;
+
+    // ReSharper disable once UnusedMember.Global
     public List<string> InferredAttribute = __GetAllInferredAttribute(mapDataItem);
-    
+
+    // ReSharper disable once UnusedMember.Global
+    public string Name = mapDataItem.name;
+
     public JObject OutputJson()
     {
         return JObject.FromObject(this);
@@ -55,7 +57,7 @@ public class Model(global::MapDataItem mapDataItem)
     private static List<string> __GetAllInferredAttribute(global::MapDataItem mapDataItem)
     {
         List<string> rl = [];
-        
+
         if (mapDataItem.isLive > 0) rl.Add("Live");
         if (mapDataItem.IsFood) rl.Add("Food");
         if (mapDataItem.IsCurePotion) rl.Add("CurePotion");
