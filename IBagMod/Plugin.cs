@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using HarmonyLib;
+using IBagMod.ContentInjectionFramework;
 
 namespace IBagMod;
 
@@ -16,8 +17,8 @@ public class Plugin : BaseUnityPlugin
 
         try
         {
-            ContentInjectionFramework.InjectionManager.Init();
-            Harmony.CreateAndPatchAll(typeof(ContentInjectionFramework.MapDataLibLoadPatch));
+            InjectionManager.Init();
+            Harmony.CreateAndPatchAll(typeof(MapDataLibLoadPatch));
         }
         catch (System.Exception exception)
         {
