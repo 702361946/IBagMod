@@ -15,33 +15,32 @@ public static class LoadingModConfig
     /// <summary>
     /// 
     /// </summary>
-    /// <returns> key: path, value: config</returns>
-    public static Hashtable ScanAllMod()
+    /// <returns> key: name, value: config</returns>
+    public static bool ScanAllMod(
+        out List<KeyValuePair<string, string>> modNameAtModPath,
+        out List<KeyValuePair<string, JObject>> modNameAtModConfig
+    )
     {
-        Hashtable result = new();
+        modNameAtModPath = [];
+        modNameAtModConfig = [];
+        
         var modRoot = PluginPath.ModPath;
 
         if (!Directory.Exists(modRoot))
         {
-            return result;
+            Plugin.Logger.LogError($"Invalid path: {modRoot}");
+            return false;
         }
 
         foreach (var modPath in Directory.GetDirectories(modRoot))
         {
             if (!ModValidityCheck(modPath, out var config, out var modName)) continue;
-            try
-            {
-                result.ContainsKey(modName);
-            }
-            catch (Exception exception)
-            {
-                Debug.LogError($"Failed to scan mod: {modPath}\n{exception}");
-                continue;
-            }
-            result[modPath] = config;
+            
+            modNameAtModPath.Add(new KeyValuePair<string, string>(modName, modPath));
+            modNameAtModConfig.Add(new KeyValuePair<string, JObject>(modName, config));
         }
 
-        return result;
+        return true;
     }
 
     public static ModModule LoadMod(out bool tryFlag, string modPath, JObject modConfig)
@@ -86,7 +85,7 @@ public static class LoadingModConfig
             return true;
         }
 
-        Debug.LogWarning($"No key \"name\" or The value of name is invalid, modpath: {modPath}");
+        Plugin.Logger.LogWarning($"No key \"name\" or The value of name is invalid, modpath: {modPath}");
         return false;
     }
 

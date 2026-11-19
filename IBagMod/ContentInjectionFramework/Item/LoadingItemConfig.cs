@@ -30,7 +30,7 @@ public static class LoadingItemConfig
                     .Select(v => (AttributeType)v.ToObject<int>())
                     .ToList() ?? [],
                 c.Value["AttributeCurveFuncList"]?
-                    .ToObject<List<List<List<int>>>>() ?? [],
+                    .ToObject<List<List<List<float>>>>() ?? [],
                 c.Value["BarColorStr"]?.ToString(),
                 c.Value["NumColorStr"]?.ToString(),
                 c.Value["IsLive"]?.ToObject<int>() ?? 0

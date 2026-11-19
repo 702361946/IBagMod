@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace IBagMod.ContentInjectionFramework.Modules;
 
@@ -15,13 +16,15 @@ namespace IBagMod.ContentInjectionFramework.Modules;
 
 public class ModItemModule
 {
-    public readonly string Name;
-    public readonly string Desc;
-    public readonly List<AttributeType> AttributeTypes;
-    public readonly List<List<List<int>>> AttributeCurveFuncList;
-    public readonly string BarColorStr;
-    public readonly string NumColorStr;
-    public readonly int IsLive;
+    private readonly List<List<List<float>>> _attributeCurveFuncList;
+    private readonly List<AttributeType> _attributeTypes;
+    private readonly string _desc;
+    private readonly int _isLive;
+    private readonly string _name;
+    private readonly Color _barColor;
+    private readonly Color _numColor;
+    private readonly string _barColorStr;
+    private readonly string _numColorStr;
     // public float BasicPriceCoef = 1f;
     // public List<int> PicIdList = [1];
     // public float ThrowPowerCoef;
@@ -33,15 +36,15 @@ public class ModItemModule
         string name,
         string description,
         List<AttributeType> attributeTypes,
-        List<List<List<int>>> attributeCurveFuncList,
+        List<List<List<float>>> attributeCurveFuncList,
         string barColorStr,
         string numColorStr,
         int isLive
     )
     {
-        Name = name ?? throw new Exception("name is null");
-        Desc = description ?? "";
-        
+        _name = name ?? throw new Exception("name is null");
+        _desc = description ?? "";
+
         attributeTypes ??= [];
         attributeCurveFuncList ??= [];
         AttributeCheck(
@@ -50,19 +53,48 @@ public class ModItemModule
             attributeTypes,
             attributeCurveFuncList
         );
-        AttributeTypes = rAttributeTypes;
-        AttributeCurveFuncList = rAttributeCurveFuncList;
+        _attributeTypes = rAttributeTypes;
+        _attributeCurveFuncList = rAttributeCurveFuncList;
+
+        if (barColorStr.Length != 7 || barColorStr.Length != 9 || barColorStr[0].ToString() != "#")
+        {
+            Plugin.Logger.LogWarning($"Non-standard color string: {barColorStr}");
+            barColorStr = "#000000";
+        }
+
+        if (numColorStr.Length != 7 || numColorStr.Length != 9 || numColorStr[0].ToString() != "#")
+        {
+            Plugin.Logger.LogWarning($"Non-standard color string: {numColorStr}");
+            numColorStr = "#000000";
+        }
         
-        BarColorStr = barColorStr ?? "#FFFFFF";
-        NumColorStr = numColorStr ?? "#FFFFFF";
-        IsLive = isLive;
+        _barColorStr = barColorStr;
+        _numColorStr = numColorStr;
+        
+        if (!ColorUtility.TryParseHtmlString(barColorStr, out var color))
+        {
+            Plugin.Logger.LogWarning($"Invalid color string: {barColorStr}");
+            color = Color.black;
+        }
+
+        _barColor = color;
+        
+        if (!ColorUtility.TryParseHtmlString(numColorStr, out var color2))
+        {
+            Plugin.Logger.LogWarning($"Invalid color string: {numColorStr}");
+            color2 = Color.black;
+        }
+        
+        _numColor = color2;
+        
+        _isLive = isLive;
     }
 
     private static void AttributeCheck(
         out List<AttributeType> attributeTypes,
-        out List<List<List<int>>> attributeCurveFuncList,
+        out List<List<List<float>>> attributeCurveFuncList,
         List<AttributeType> fAttributeTypes,
-        List<List<List<int>>> fAttributeCurveFuncList
+        List<List<List<float>>> fAttributeCurveFuncList
     )
     {
         if (fAttributeCurveFuncList.Count == fAttributeTypes.Count)
@@ -72,13 +104,40 @@ public class ModItemModule
         }
         else if (fAttributeCurveFuncList.Count > fAttributeTypes.Count)
         {
+            Plugin.Logger.LogWarning(
+                "AttributeCurveFuncList has exceeded AttributeTypes in length, "
+                + "and the exceeding part will be discarded"
+                );
             attributeTypes = fAttributeTypes;
             attributeCurveFuncList = fAttributeCurveFuncList.GetRange(0, fAttributeTypes.Count);
         }
         else
         {
+            Plugin.Logger.LogWarning(
+                "AttributeTypes has exceeded AttributeCurveFuncList in length, "
+                + "and the exceeding part will be discarded");
             attributeTypes = fAttributeTypes.GetRange(0, fAttributeCurveFuncList.Count);
             attributeCurveFuncList = fAttributeCurveFuncList;
         }
+    }
+
+    /// <summary>
+    ///     No ID has been assigned. Please pay attention to assigning one
+    /// </summary>
+    /// <returns></returns>
+    public MapDataItem ModuleToGameItem()
+    {
+        return new MapDataItem
+        {
+            name = _name,
+            desc = _desc,
+            attriTypeList = _attributeTypes,
+            attriFuncCoefList = _attributeCurveFuncList,
+            barColorStr = _barColorStr,
+            numColorStr = _numColorStr,
+            barColor = _barColor,
+            numColor = _numColor,
+            isLive = _isLive
+        };
     }
 }

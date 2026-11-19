@@ -9,6 +9,6 @@ public static class MapDataLibLoadPatch
     // ReSharper disable once UnusedMember.Global
     public static void Postfix()
     {
-        InjectionManager.ApplyPendingItems();
+        Injection.Manager.Injection();
     }
 }

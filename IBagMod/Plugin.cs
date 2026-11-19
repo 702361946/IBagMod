@@ -1,6 +1,8 @@
 ﻿using BepInEx;
+using BepInEx.Logging;
 using HarmonyLib;
 using IBagMod.ContentInjectionFramework;
+using IBagMod.ContentInjectionFramework.Injection;
 
 namespace IBagMod;
 
@@ -10,6 +12,8 @@ public class Plugin : BaseUnityPlugin
     private const string PluginGuid = "702361946.IBagMod";
     private const string PluginName = "IBagMod";
     private const string PluginVersion = "1.0.0";
+
+    public new static readonly ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("IBagMod");
     
     private void Awake()
     {
@@ -17,12 +21,12 @@ public class Plugin : BaseUnityPlugin
 
         try
         {
-            InjectionManager.Init();
+            Manager.Init();
             Harmony.CreateAndPatchAll(typeof(MapDataLibLoadPatch));
         }
         catch (System.Exception exception)
         {
-            Logger.LogError($"CIF 初始化失败：{exception}");
+            Logger.LogError($"CIF init error: {exception}");
         }
 
         if (IBagMod.Config.UnlockResolutionLimit.Value)
