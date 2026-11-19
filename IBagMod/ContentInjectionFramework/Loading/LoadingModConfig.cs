@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using IBagMod.ContentInjectionFramework.Item;
 using IBagMod.ContentInjectionFramework.Modules;
 using Newtonsoft.Json.Linq;
-using UnityEngine;
 
-namespace IBagMod.ContentInjectionFramework;
+namespace IBagMod.ContentInjectionFramework.Loading;
 
 public static class LoadingModConfig
 {
@@ -32,12 +28,20 @@ public static class LoadingModConfig
             return false;
         }
 
-        foreach (var modPath in Directory.GetDirectories(modRoot))
+        try
         {
-            if (!ModValidityCheck(modPath, out var config, out var modName)) continue;
-            
-            modNameAtModPath.Add(new KeyValuePair<string, string>(modName, modPath));
-            modNameAtModConfig.Add(new KeyValuePair<string, JObject>(modName, config));
+            foreach (var modPath in Directory.GetDirectories(modRoot))
+            {
+                if (!ModValidityCheck(modPath, out var config, out var modName)) continue;
+
+                modNameAtModPath.Add(new KeyValuePair<string, string>(modName, modPath));
+                modNameAtModConfig.Add(new KeyValuePair<string, JObject>(modName, config));
+            }
+        }
+        catch (Exception exception)
+        {
+            Plugin.Logger.LogError($"An error occurred while scanning all mods: {exception}");
+            return false;
         }
 
         return true;
@@ -47,8 +51,8 @@ public static class LoadingModConfig
     {
         tryFlag = false;
 
-        var modName = modConfig.GetValue("name")?.ToString();
-        if (!string.IsNullOrWhiteSpace(modName))
+        var modName = modConfig.GetValue("name", StringComparison.OrdinalIgnoreCase)?.ToString();
+        if (string.IsNullOrWhiteSpace(modName))
         {
             return null;
         }
@@ -56,17 +60,35 @@ public static class LoadingModConfig
         List<ModItemModule> modItemModules = [];
         if (modConfig.GetValue("ItemConfig") is not JArray itemConfigs)
         {
+            tryFlag = true;
             return new ModModule(modName, modConfig, modItemModules);
         }
 
-        var allGet = itemConfigs.Select(
-            itemConfig => Path.Combine(modPath, itemConfig.ToString())
-        ).Select(
-            path => LoadingItemConfig.LoadingItemModule(path, out _)
-        );
+        foreach (var itemConfig in itemConfigs)
+        {
+            var fullPath = Path.GetFullPath(Path.Combine(modPath, itemConfig.ToString()));
 
-        modItemModules.AddRange(allGet.SelectMany(a => a));
+            if (!fullPath.StartsWith(modPath, StringComparison.OrdinalIgnoreCase))
+            {
+                Plugin.Logger.LogWarning($"ItemConfig path escapes mod directory: {itemConfig}");
+                continue;
+            }
 
+            try
+            {
+                var modules = LoadingItemConfig.LoadingItemModule(fullPath);
+                if (modules is not null)
+                {
+                    modItemModules.AddRange(modules);
+                }
+            }
+            catch (Exception e)
+            {
+                Plugin.Logger.LogError($"Failed to load item config, error: {e}");
+            }
+        }
+
+        tryFlag = true;
         return new ModModule(modName, modConfig, modItemModules);
     }
 
@@ -105,7 +127,7 @@ public static class LoadingModConfig
         }
         catch (Exception exception)
         {
-            Debug.LogError(exception);
+            Plugin.Logger.LogError(exception);
             return null;
         }
     }

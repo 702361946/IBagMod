@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 namespace IBagMod.ContentInjectionFramework.Modules;
@@ -16,6 +17,8 @@ namespace IBagMod.ContentInjectionFramework.Modules;
 
 public class ModItemModule
 {
+    // ReSharper disable once NotAccessedField.Local
+    private readonly JObject _config;
     private readonly List<List<List<float>>> _attributeCurveFuncList;
     private readonly List<AttributeType> _attributeTypes;
     private readonly string _desc;
@@ -33,6 +36,7 @@ public class ModItemModule
     // public int WeaponType;
 
     public ModItemModule(
+        JObject config,
         string name,
         string description,
         List<AttributeType> attributeTypes,
@@ -42,6 +46,7 @@ public class ModItemModule
         int isLive
     )
     {
+        _config = config;
         _name = name ?? throw new Exception("name is null");
         _desc = description ?? "";
 
@@ -56,13 +61,16 @@ public class ModItemModule
         _attributeTypes = rAttributeTypes;
         _attributeCurveFuncList = rAttributeCurveFuncList;
 
-        if (barColorStr.Length != 7 || barColorStr.Length != 9 || barColorStr[0].ToString() != "#")
+        barColorStr ??= "#000000";
+        numColorStr ??= "#000000";
+
+        if (barColorStr.Length != 7 && barColorStr.Length != 9 || barColorStr[0] != '#')
         {
             Plugin.Logger.LogWarning($"Non-standard color string: {barColorStr}");
             barColorStr = "#000000";
         }
 
-        if (numColorStr.Length != 7 || numColorStr.Length != 9 || numColorStr[0].ToString() != "#")
+        if (numColorStr.Length != 7 && numColorStr.Length != 9 || numColorStr[0] != '#')
         {
             Plugin.Logger.LogWarning($"Non-standard color string: {numColorStr}");
             numColorStr = "#000000";

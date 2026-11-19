@@ -1,4 +1,5 @@
-﻿using BepInEx;
+﻿using System;
+using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using IBagMod.ContentInjectionFramework;
@@ -18,20 +19,31 @@ public class Plugin : BaseUnityPlugin
     private void Awake()
     {
         IBagMod.Config.Init(Config);
-
+        if (!Manager.Init())
+        {
+            Logger.LogError("CIF init failed");
+        }
+        
         try
         {
-            Manager.Init();
             Harmony.CreateAndPatchAll(typeof(MapDataLibLoadPatch));
         }
-        catch (System.Exception exception)
+        catch (Exception exception)
         {
             Logger.LogError($"CIF init error: {exception}");
         }
 
+        // ReSharper disable once InvertIf
         if (IBagMod.Config.UnlockResolutionLimit.Value)
         {
-            Harmony.CreateAndPatchAll(typeof(UnlockResolutionLimit.Patch));
+            try
+            {
+                Harmony.CreateAndPatchAll(typeof(UnlockResolutionLimit.Patch));
+            }
+            catch (Exception e)
+            {
+                Logger.LogError($"The application of the UnlockResolutionLimit patch failed: {e}");
+            }
         }
     }
 }

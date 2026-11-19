@@ -4,16 +4,13 @@ using System.IO;
 using System.Linq;
 using IBagMod.ContentInjectionFramework.Modules;
 using Newtonsoft.Json.Linq;
-using UnityEngine;
 
-namespace IBagMod.ContentInjectionFramework.Item;
+namespace IBagMod.ContentInjectionFramework.Loading;
 
 public static class LoadingItemConfig
 {
-    public static List<ModItemModule> LoadingItemModule(string configPath, out JObject config)
+    public static List<ModItemModule> LoadingItemModule(string configPath)
     {
-        config = null;
-        
         if (!ItemValidityCheck(configPath, out var iConfig))
         {
             return null;
@@ -23,18 +20,31 @@ public static class LoadingItemConfig
 
         foreach (var c in iConfig)
         {
-            rm.Add(new ModItemModule(
-                c.Key,
-                c.Value!["Desc"]?.ToString() ?? "",
-                c.Value["AttributeTypes"]?
-                    .Select(v => (AttributeType)v.ToObject<int>())
-                    .ToList() ?? [],
-                c.Value["AttributeCurveFuncList"]?
-                    .ToObject<List<List<List<float>>>>() ?? [],
-                c.Value["BarColorStr"]?.ToString(),
-                c.Value["NumColorStr"]?.ToString(),
-                c.Value["IsLive"]?.ToObject<int>() ?? 0
-            ));
+            if (c.Value is not JObject itemObj)
+            {
+                Plugin.Logger.LogWarning($"Invalid item config: {c.Key}");
+                continue;
+            }
+            
+            try
+            {
+                rm.Add(new ModItemModule(
+                    itemObj,
+                    c.Key,
+                    itemObj["Desc"]?.ToString() ?? "",
+                    itemObj["AttributeTypes"]?
+                        .Select(v => (AttributeType)v.ToObject<int>())
+                        .ToList() ?? [],
+                    itemObj["AttributeCurveFuncList"]?
+                        .ToObject<List<List<List<float>>>>() ?? [],
+                    itemObj["BarColorStr"]?.ToString() ?? "#000000",
+                    itemObj["NumColorStr"]?.ToString() ?? "#000000",
+                    itemObj["IsLive"]?.ToObject<int>() ?? 0
+                ));
+            } catch (Exception e)
+            {
+                Plugin.Logger.LogWarning($"Invalid item config, key: {c.Key}, error: {e}");
+            }
         }
 
         return rm;
@@ -54,7 +64,7 @@ public static class LoadingItemConfig
         }
         catch (Exception exception)
         {
-            Debug.LogError(exception);
+            Plugin.Logger.LogError(exception);
             return null;
         }
     }
@@ -77,7 +87,7 @@ public static class LoadingItemConfig
         {
             if (!string.IsNullOrWhiteSpace(c.Key)) continue;
 
-            Debug.LogError($"item name error, name is {c.Key}");
+            Plugin.Logger.LogError($"item name error, name is {c.Key}");
             eKey.Add(c.Key);
         }
         

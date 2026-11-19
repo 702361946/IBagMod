@@ -49,8 +49,4 @@
         <HintPath>..\Lib\Game\Assembly-CSharp.dll</HintPath>
       </Reference>
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="ContentInjectionFramework\Plot\" />
-    </ItemGroup>
 </Project>

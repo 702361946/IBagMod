@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using IBagMod.ContentInjectionFramework.Loading;
 using IBagMod.ContentInjectionFramework.Modules;
 
 namespace IBagMod.ContentInjectionFramework.Injection;
 
-public class Manager
+public static class Manager
 {
-    private static List<KeyValuePair<string, ModModule>> AllLoadMod = [];
+    private static readonly List<KeyValuePair<string, ModModule>> AllLoadMod = [];
     private static bool _init;
 
-    public static void ClearAllInit()
+    private static void ClearAllInit()
     {
         _init = false;
         AllLoadMod.Clear();
@@ -27,7 +28,7 @@ public class Manager
         if (_init && !forceReinitialization) return true;
 
         if (
-            LoadingModConfig.ScanAllMod(
+            !LoadingModConfig.ScanAllMod(
                 out var modNameAtModPath,
                 out var modNameAtModConfig
             )
