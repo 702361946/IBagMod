@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
-using IBagMod.ContentInjectionFramework;
 using IBagMod.ContentInjectionFramework.Injection;
+using UnityEngine;
 
 namespace IBagMod;
 
@@ -12,7 +13,7 @@ public class Plugin : BaseUnityPlugin
 {
     private const string PluginGuid = "702361946.IBagMod";
     private const string PluginName = "IBagMod";
-    private const string PluginVersion = "1.0.0";
+    private const string PluginVersion = "1.0.1";
 
     public new static readonly ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("IBagMod");
     
@@ -22,15 +23,6 @@ public class Plugin : BaseUnityPlugin
         if (!Manager.Init())
         {
             Logger.LogError("CIF init failed");
-        }
-        
-        try
-        {
-            Harmony.CreateAndPatchAll(typeof(MapDataLibLoadPatch));
-        }
-        catch (Exception exception)
-        {
-            Logger.LogError($"CIF init error: {exception}");
         }
 
         // ReSharper disable once InvertIf
@@ -45,5 +37,20 @@ public class Plugin : BaseUnityPlugin
                 Logger.LogError($"The application of the UnlockResolutionLimit patch failed: {e}");
             }
         }
+        
+        StartCoroutine(ExportWhenGameDataReady());
+    }
+    
+    private static IEnumerator ExportWhenGameDataReady()
+    {
+        Logger.LogInfo("Waiting for data loading");
+
+        while (
+            MapDataLib.mdItemLib == null ||
+            !GameStatus.hasLoadMapData
+        )
+            yield return new WaitForSecondsRealtime(0.1f);
+
+        Manager.Injection();
     }
 }

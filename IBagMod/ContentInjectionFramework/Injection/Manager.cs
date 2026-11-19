@@ -102,6 +102,9 @@ public static class Manager
         if (!InjectionItem.Injection(injectionAllItem))
         {
             Plugin.Logger.LogWarning("Injection item anomaly");
+            return;
         }
+        
+        Plugin.Logger.LogInfo("Injection of item completed");
     }
 }

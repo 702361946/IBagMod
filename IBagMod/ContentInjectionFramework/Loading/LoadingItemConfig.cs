@@ -33,7 +33,7 @@ public static class LoadingItemConfig
                     c.Key,
                     itemObj["Desc"]?.ToString() ?? "",
                     itemObj["AttributeTypes"]?
-                        .Select(v => (AttributeType)v.ToObject<int>())
+                        .Select(v => v.ToObject<AttributeType>())
                         .ToList() ?? [],
                     itemObj["AttributeCurveFuncList"]?
                         .ToObject<List<List<List<float>>>>() ?? [],
