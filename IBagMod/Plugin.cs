@@ -13,7 +13,7 @@ public class Plugin : BaseUnityPlugin
 {
     private const string PluginGuid = "702361946.IBagMod";
     private const string PluginName = "IBagMod";
-    private const string PluginVersion = "1.0.1";
+    private const string PluginVersion = "1.0.2";
 
     public new static readonly ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("IBagMod");
     
@@ -35,6 +35,18 @@ public class Plugin : BaseUnityPlugin
             catch (Exception e)
             {
                 Logger.LogError($"The application of the UnlockResolutionLimit patch failed: {e}");
+            }
+        }
+        
+        if (IBagMod.Config.UnlockAllStoryState.Value)
+        {
+            try
+            {
+                Harmony.CreateAndPatchAll(typeof(UnlockAllStoryState.Patch));
+            }
+            catch (Exception e)
+            {
+                Logger.LogError($"The application of the UnlockAllStoryState patch failed: {e}");
             }
         }
         

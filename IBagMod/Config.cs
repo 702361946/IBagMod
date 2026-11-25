@@ -5,6 +5,8 @@ namespace IBagMod;
 public static class Config
 {
     public static ConfigEntry<bool> UnlockResolutionLimit { get; private set; }
+    
+    public static ConfigEntry<bool> UnlockAllStoryState { get; private set; }
 
     public static void Init(ConfigFile config)
     {
@@ -13,6 +15,13 @@ public static class Config
             nameof(UnlockResolutionLimit),
             true,
             "Skip the 540x960 resolution check in PreLoad.Update."
+        );
+        
+        UnlockAllStoryState = config.Bind(
+            "IBagMod",
+            nameof(UnlockAllStoryState),
+            false,
+            "Unlock all unlockable story nodes"
         );
     }
 }
