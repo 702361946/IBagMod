@@ -1,0 +1,7 @@
+﻿{
+    "name": "TestMod",
+    "ItemConfig": [
+        "items.json",
+        "items1.json"
+    ]
+}

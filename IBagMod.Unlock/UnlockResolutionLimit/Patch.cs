@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 
-namespace IBagMod.UnlockResolutionLimit;
+namespace IBagMod.Unlock.UnlockResolutionLimit;
 
 [HarmonyPatch(typeof(PreLoad), "Update")]
 public static class Patch

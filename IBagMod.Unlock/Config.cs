@@ -1,6 +1,6 @@
 ﻿using BepInEx.Configuration;
 
-namespace IBagMod;
+namespace IBagMod.Unlock;
 
 public static class Config
 {
@@ -11,14 +11,14 @@ public static class Config
     public static void Init(ConfigFile config)
     {
         UnlockResolutionLimit = config.Bind(
-            "IBagMod",
+            "IBagMod.Unlock",
             nameof(UnlockResolutionLimit),
             true,
             "Skip the 540x960 resolution check in PreLoad.Update."
         );
         
         UnlockAllStoryState = config.Bind(
-            "IBagMod",
+            "IBagMod.Unlock",
             nameof(UnlockAllStoryState),
             false,
             "Unlock all unlockable story nodes"

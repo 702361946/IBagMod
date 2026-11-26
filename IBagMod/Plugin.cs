@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using BepInEx;
 using BepInEx.Logging;
-using HarmonyLib;
 using IBagMod.ContentInjectionFramework.Injection;
 using UnityEngine;
 
@@ -19,35 +17,9 @@ public class Plugin : BaseUnityPlugin
     
     private void Awake()
     {
-        IBagMod.Config.Init(Config);
         if (!Manager.Init())
         {
             Logger.LogError("CIF init failed");
-        }
-
-        // ReSharper disable once InvertIf
-        if (IBagMod.Config.UnlockResolutionLimit.Value)
-        {
-            try
-            {
-                Harmony.CreateAndPatchAll(typeof(UnlockResolutionLimit.Patch));
-            }
-            catch (Exception e)
-            {
-                Logger.LogError($"The application of the UnlockResolutionLimit patch failed: {e}");
-            }
-        }
-        
-        if (IBagMod.Config.UnlockAllStoryState.Value)
-        {
-            try
-            {
-                Harmony.CreateAndPatchAll(typeof(UnlockAllStoryState.Patch));
-            }
-            catch (Exception e)
-            {
-                Logger.LogError($"The application of the UnlockAllStoryState patch failed: {e}");
-            }
         }
         
         StartCoroutine(ExportWhenGameDataReady());

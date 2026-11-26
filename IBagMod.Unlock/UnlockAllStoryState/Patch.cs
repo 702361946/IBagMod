@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 
-namespace IBagMod.UnlockAllStoryState;
+namespace IBagMod.Unlock.UnlockAllStoryState;
 
 [HarmonyPatch(typeof(StoryCompleteState), "Load")]
 public static class Patch
