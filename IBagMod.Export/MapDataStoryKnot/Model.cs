@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
-namespace Export.MapDataStoryKnot;
+namespace IBagMod.Export.MapDataStoryKnot;
 
 public class Model(MapDataStoryKnotUnit unit)
 {

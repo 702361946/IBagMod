@@ -24,7 +24,7 @@
             https://nuget.bepinex.dev/v3/index.json;
             https://nuget.samboy.dev/v3/index.json
         </RestoreAdditionalProjectSources>
-        <RootNamespace>Export</RootNamespace>
+        <RootNamespace>IBagMod.Export</RootNamespace>
         <LangVersion>14.0</LangVersion>
     </PropertyGroup>
 

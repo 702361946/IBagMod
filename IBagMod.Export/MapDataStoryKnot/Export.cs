@@ -2,7 +2,7 @@
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace Export.MapDataStoryKnot;
+namespace IBagMod.Export.MapDataStoryKnot;
 
 public static class Export
 {

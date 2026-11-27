@@ -2,7 +2,7 @@
 using System.Reflection;
 using BepInEx;
 
-namespace Export;
+namespace IBagMod.Export;
 
 public static class ExportPath
 {

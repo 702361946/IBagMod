@@ -2,7 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBagMod", "IBagMod\IBagMod.csproj", "{B2575C9D-D7DC-47B6-A6C7-00D3204C26A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Export", "Export\Export.csproj", "{0FC23375-BA76-49A0-BF38-68970B31A7D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBagMod.Export", "IBagMod.Export\IBagMod.Export.csproj", "{0FC23375-BA76-49A0-BF38-68970B31A7D2}"
+EndProject
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBagMod.Unlock", "IBagMod.Unlock\IBagMod.Unlock.csproj", "{348D3FDC-CEBF-40D7-88E9-847A80DF7B52}"
 EndProject

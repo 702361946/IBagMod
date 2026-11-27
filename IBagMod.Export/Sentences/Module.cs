@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace Export.Sentences;
+namespace IBagMod.Export.Sentences;
 
 public class Module(SentencePack sentencePack)
 {

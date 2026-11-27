@@ -7,10 +7,8 @@ using BepInEx;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
-using MapDataItemExporter = Export.MapDataItem.Export;
-using SentencesExporter = Export.Sentences.Export;
 
-namespace Export;
+namespace IBagMod.Export;
 
 [BepInPlugin("702361946.IBagMod.Export", "IBagMod.Export", "1.0.2")]
 public class ExportMain : BaseUnityPlugin
@@ -53,9 +51,9 @@ public class ExportMain : BaseUnityPlugin
 
         try
         {
-            var itemJsonList = MapDataItemExporter.Main(mapDataItemLib);
+            var itemJsonList = MapDataItem.Export.Main(mapDataItemLib);
             var storyKnotJsonList = MapDataStoryKnot.Export.Main(mapDataStoryKnotLib);
-            var sentencesJson = SentencesExporter.Main(SentenceBank.pack);
+            var sentencesJson = Sentences.Export.Main(SentenceBank.pack);
 
             var json = BuildJsonArray(itemJsonList);
             var outputFile = Path.Combine(ExportPath.OutputPath, "ItemData.json");
@@ -82,7 +80,7 @@ public class ExportMain : BaseUnityPlugin
         }
         catch (Exception exception)
         {
-            Logger.LogError($"Export out not ok, error is：{exception}");
+            Logger.LogError($"IBagMod.Export out not ok, error is：{exception}");
         }
     }
 

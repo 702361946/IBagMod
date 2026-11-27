@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace Export.Sentences;
+namespace IBagMod.Export.Sentences;
 
 public static class Export
 {

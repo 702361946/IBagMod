@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace Export.MapDataItem;
+namespace IBagMod.Export.MapDataItem;
 
 public class Model(global::MapDataItem mapDataItem)
 {

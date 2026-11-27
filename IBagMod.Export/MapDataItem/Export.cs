@@ -2,7 +2,7 @@
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace Export.MapDataItem;
+namespace IBagMod.Export.MapDataItem;
 
 public static class Export
 {
