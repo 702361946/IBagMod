@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace IBagMod.ContentInjectionFramework.Injection;
+namespace IBagMod.CIF.Injection;
 
 public static class InjectionItem
 {

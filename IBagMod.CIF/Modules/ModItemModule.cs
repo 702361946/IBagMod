@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
-namespace IBagMod.ContentInjectionFramework.Modules;
+namespace IBagMod.CIF.Modules;
 
 // public enum ItemEquipPosition
 // {

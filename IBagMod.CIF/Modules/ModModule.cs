@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
-namespace IBagMod.ContentInjectionFramework.Modules;
+namespace IBagMod.CIF.Modules;
 
 public class ModModule(
     string modName,

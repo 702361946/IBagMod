@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using IBagMod.ContentInjectionFramework.Modules;
+using IBagMod.CIF.Modules;
 using Newtonsoft.Json.Linq;
 
-namespace IBagMod.ContentInjectionFramework.Loading;
+namespace IBagMod.CIF.Loading;
 
 public static class LoadingItemConfig
 {

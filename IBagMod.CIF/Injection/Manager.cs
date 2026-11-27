@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using IBagMod.ContentInjectionFramework.Loading;
-using IBagMod.ContentInjectionFramework.Modules;
+using IBagMod.CIF.Loading;
+using IBagMod.CIF.Modules;
 
-namespace IBagMod.ContentInjectionFramework.Injection;
+namespace IBagMod.CIF.Injection;
 
 public static class Manager
 {
